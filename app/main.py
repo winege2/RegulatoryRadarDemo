@@ -17,11 +17,19 @@ app = FastAPI(
     version="0.1.0",
 )
 
+APP_VERSION = "1.1.0"
+
 
 @app.get("/health")
 def health() -> dict:
     """Liveness check that also tells you which data mode is active."""
     return {"status": "ok", "mode": settings.openfda_mode}
+
+
+@app.get("/version")
+def version() -> dict:
+    """Deployed application version."""
+    return {"version": APP_VERSION}
 
 
 @app.get("/products")

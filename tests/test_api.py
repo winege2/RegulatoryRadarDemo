@@ -13,6 +13,12 @@ def test_health_reports_fixture_mode():
     assert response.json() == {"status": "ok", "mode": "fixture"}
 
 
+def test_version():
+    response = client.get("/version")
+    assert response.status_code == 200
+    assert response.json() == {"version": "1.1.0"}
+
+
 def test_products_list_and_detail():
     items = client.get("/products").json()
     assert len(items) == 6
