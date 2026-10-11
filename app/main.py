@@ -24,6 +24,16 @@ def health() -> dict:
     return {"status": "ok", "mode": settings.openfda_mode}
 
 
+@app.get("/health/details")
+def health_details() -> dict:
+    """Like /health, plus counts of loaded products and regulatory updates."""
+    return {
+        **health(),
+        "products": len(portfolio.load_products()),
+        "updates": len(portfolio.load_updates()),
+    }
+
+
 @app.get("/products")
 def products() -> list[Product]:
     """The Acme MedTech product portfolio."""
