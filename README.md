@@ -76,7 +76,7 @@ python -m uvicorn app.main:app --reload
 ```
 
 Leave this running. `--reload` restarts the server automatically whenever you
-edit a file. Stop it with `Ctrl+C`.
+Stop the sevrer with `Ctrl+C`.
 
 ## 6. Try it
 
