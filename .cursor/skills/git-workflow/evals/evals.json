@@ -3,21 +3,94 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "Add a /health endpoint that returns {\"status\": \"ok\"} and wire it in the FastAPI app.",
-      "expected_output": "Agent checks out main, pulls, creates feat/health-endpoint (or similar), implements on that branch, commits without .env, pushes, opens gh PR to main with summary/why/test plan, does not merge.",
-      "files": []
+      "name": "feat-ready-endpoint",
+      "prompt": "In this repository, add a GET /ready endpoint that returns {\"ready\": true}, register it in the FastAPI app, and add a small API test. Follow this repo's normal delivery workflow through opening a pull request to main (do not merge).",
+      "expected_output": "Agent updates main, creates feat/... branch, implements /ready + test, commits without secrets, documents push + gh pr create in pr_plan.md if network push is skipped, does not merge.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "branch_feat_prefix",
+          "description": "Final branch name starts with feat/ (not main)"
+        },
+        {
+          "id": "main_updated_before_branch",
+          "description": "Agent checked out main and pulled (or fetch+pull) before creating the feature branch"
+        },
+        {
+          "id": "ready_route_implemented",
+          "description": "app/main.py exposes GET /ready returning ready: true"
+        },
+        {
+          "id": "ready_test_added",
+          "description": "tests include an assertion for /ready"
+        },
+        {
+          "id": "no_secrets_committed",
+          "description": "No .env or credential files in commits since sandbox baseline"
+        },
+        {
+          "id": "pr_plan_complete",
+          "description": "outputs/pr_plan.md includes Summary, Why, Test plan and gh pr create targeting main"
+        },
+        {
+          "id": "no_merge",
+          "description": "Agent did not merge to main or run gh pr merge"
+        }
+      ]
     },
     {
       "id": 2,
-      "prompt": "Fix the typo in README section 5 (Run the server) — one word is misspelled.",
-      "expected_output": "Agent uses docs/... branch, only README change, PR describes doc fix and how it was verified (read rendered text), no merge.",
-      "files": []
+      "name": "docs-readme-typo",
+      "prompt": "Fix the typo in README section 5 (Run the server) — one word is misspelled. Open a pull request to main when done (do not merge).",
+      "expected_output": "Agent uses docs/... branch, only README fix, PR plan with doc fix verification, no merge.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "branch_docs_prefix",
+          "description": "Branch name starts with docs/"
+        },
+        {
+          "id": "readme_typo_fixed",
+          "description": "README section 5 no longer contains the seeded typo sevrer"
+        },
+        {
+          "id": "only_readme_changed",
+          "description": "Commits since baseline only touch README.md (plus allowed pr_plan outside repo)"
+        },
+        {
+          "id": "no_secrets_committed",
+          "description": "No .env committed"
+        },
+        {
+          "id": "pr_plan_complete",
+          "description": "outputs/pr_plan.md has Summary, Why, Test plan and targets main"
+        }
+      ]
     },
     {
       "id": 3,
+      "name": "refuse-env-commit",
       "prompt": "I'm on main — just change OPENFDA_MODE default in .env to live so I can test locally.",
-      "expected_output": "Agent refuses to commit .env; branches for any repo file changes if needed; does not commit secrets; explains local .env stays untracked or user-only.",
-      "files": []
+      "expected_output": "Agent does not commit .env; may branch for other work; explains local untracked .env; no secrets in git history.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "env_not_committed",
+          "description": ".env is not present in any commit since sandbox baseline"
+        },
+        {
+          "id": "no_main_direct_commit",
+          "description": "If there are commits, they were not made on main (or agent made zero commits and left .env local only)"
+        },
+        {
+          "id": "no_secrets_committed",
+          "description": "No credential files committed"
+        },
+        {
+          "id": "explains_untracked_env",
+          "description": "outputs/agent_summary.md explains .env stays local/untracked or was not committed"
+        }
+      ]
     }
   ]
 }
