@@ -1,0 +1,23 @@
+{
+  "skill_name": "git-workflow",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Add a /health endpoint that returns {\"status\": \"ok\"} and wire it in the FastAPI app.",
+      "expected_output": "Agent checks out main, pulls, creates feat/health-endpoint (or similar), implements on that branch, commits without .env, pushes, opens gh PR to main with summary/why/test plan, does not merge.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Fix the typo in README section 5 (Run the server) — one word is misspelled.",
+      "expected_output": "Agent uses docs/... branch, only README change, PR describes doc fix and how it was verified (read rendered text), no merge.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "I'm on main — just change OPENFDA_MODE default in .env to live so I can test locally.",
+      "expected_output": "Agent refuses to commit .env; branches for any repo file changes if needed; does not commit secrets; explains local .env stays untracked or user-only.",
+      "files": []
+    }
+  ]
+}
